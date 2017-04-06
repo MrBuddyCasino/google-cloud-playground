@@ -1,0 +1,37 @@
+server {
+       listen 443 ssl;
+
+       ssl_certificate     cert.crt;
+       ssl_certificate_key cert.key;
+
+       server_name example.com;
+
+       root /var/www/html;
+       index index.nginx-debian.html;
+
+
+       location /customer {
+               proxy_pass https://104.155.14.188:9443/customer;
+       }
+       location /customerdata {
+               rewrite /customerdata/(.*) /$1  break;
+
+               proxy_pass https://35.187.9.115:9443;
+       }
+       location /contacthistory {
+              proxy_pass https://35.187.34.48:9443/contacthistory;
+       }
+       location /kontakthistorie {
+              proxy_pass https://35.187.33.148:9443/kontakthistorie;
+       }
+       location /oms-ingestor {
+              proxy_pass https://35.187.162.158:9443/oms-ingestor;
+       }
+       location /assets {
+              proxy_pass https://35.187.49.14:9443/assets;
+       }
+
+       location / {
+               try_files $uri $uri/ =404;
+       }
+}

@@ -1,0 +1,20 @@
+---
+# defaults file for gcloud
+
+gcloud_archive_name: 'google-cloud-sdk-146.0.0-linux-x86_64.tar.gz'   # If present, the archive will be downloaded.
+gcloud_tmp_path: /tmp/install_gcloud    # Path where the downloaded archive can be temporarily placed
+gcloud_force_download: yes              # Always download the archive, even if it already exists in the temp path.
+
+gcloud_archive_path: ''                 # Path to the gcloud archive file on the Ansible host.
+                                        # If present archive will be copied, not downloaded.
+
+gcloud_install_path: "/opt/gcloud"  # Path on jenkins where the unarchived files should land.
+
+gcloud_usage_reporting: no        # Enable usage reporting?
+gcloud_profile_path: ''           # Path to the user profile login script. Optional.
+gcloud_command_completion: yes    # Enable bash style command completion in the login script?
+gcloud_update_path: yes           # Update the PATH when modifying user's login script.
+gcloud_override_components: []    # Override the components that would be installed by default, and install these instead. 
+
+gcloud_additional_components: [kubectl, beta, pubsub-emulator, cbt]  # Additional components to install by default.
+gcloud_debug: yes 

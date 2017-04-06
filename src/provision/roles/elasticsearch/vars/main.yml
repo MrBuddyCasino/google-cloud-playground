@@ -1,0 +1,10 @@
+---
+es_home: "/usr/share/elasticsearch"
+es_package_url: "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch"
+es_conf_dir: "/etc/elasticsearch"
+sysd_script: "/usr/lib/systemd/system/elasticsearch.service"
+init_script: "/etc/init.d/elasticsearch"
+java: "{% if es_java is defined %}{{es_java}}{% else %}openjdk-8-jre-headless{% endif %}"
+default_file: "/etc/default/elasticsearch"
+#add supported features here
+supported_xpack_features: ["alerting","monitoring","graph","security"]

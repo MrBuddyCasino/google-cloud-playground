@@ -1,0 +1,7 @@
+---
+#Python is not in the default installation of xenial and has do be install with raw command
+- name: apt-get update
+  raw: apt-get update -qq
+
+- name: Install python 2.7
+  raw: apt-get install -qq python-minimal

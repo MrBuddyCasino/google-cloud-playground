@@ -1,0 +1,14 @@
+---
+- name: Format elasticsearch data disk
+  filesystem:
+    fstype: ext4
+    dev: "{{ elasticdata_disk }}"
+  become: yes
+  become_method: sudo
+
+- name: Mount elasticsearch data disk
+  mount:
+    name: "{{ es_data_dirs }}"
+    src: "{{ elasticdata_disk }}"
+    fstype: ext4
+    state: mounted

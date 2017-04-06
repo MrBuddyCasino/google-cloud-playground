@@ -1,0 +1,27 @@
+---
+- name: Install "nginx" package
+  apt:
+    name: nginx
+    update_cache: true
+
+
+- name: Copy Cert
+  template:
+    src: cert.crt
+    dest: /etc/nginx/cert.crt
+  notify:
+    - Restart Nginx
+
+- name: Copy Key
+  template:
+    src: cert.key
+    dest: /etc/nginx/cert.key
+  notify:
+    - Restart Nginx
+
+- name: Copy Config
+  copy:
+    src: default
+    dest: /etc/nginx/sites-enabled/default
+  notify:
+    - Restart Nginx

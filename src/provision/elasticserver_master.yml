@@ -1,0 +1,13 @@
+---
+- name: Elasticsearch Master Node configuration
+  hosts: all, localhost
+  become: yes
+  become_method: sudo
+  gather_facts: false
+  roles:
+    - python
+    - locale
+    - common
+    - java
+    - elasticsearch-data-disk-setup
+    - elasticsearch

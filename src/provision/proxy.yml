@@ -1,0 +1,10 @@
+---
+- hosts: all, localhost
+  become: yes
+  become_method: sudo
+  gather_facts: False
+  roles:
+    - python
+    - locale
+    - common
+    - nginx-proxy

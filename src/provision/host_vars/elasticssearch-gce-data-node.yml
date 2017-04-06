@@ -1,0 +1,23 @@
+---
+elasticdata_disk: /dev/sdb
+es_instance_name: 'data'
+es_heap_size: '4g'
+#Attention crm360-degrees is replaced in cloud/crm360/persistence/elasticsearch/elasticsearch_metadata_startup_script.sh
+es_config: {
+  cloud.gce.project_id: "{{ lookup('env', 'GCP_PROJECT_ID') }}",
+  cloud.gce.zone: "europe-west1-b",
+  discovery.zen.hosts_provider: "gce",
+  cluster.name: 'csit-conrad-elastic-cluster',
+  http.port: 9200,
+  network.bind_host: 0.0.0.0,
+  transport.tcp.port: 9300,
+  node.data: true,
+  node.master: false,
+  bootstrap.memory_lock: true,
+  network.host: _gce_
+}
+es_plugins_reinstall: true
+es_plugins:
+  - plugin: discovery-gce
+#es_enable_xpack: true
+#es_xpack_features: ["alerting","monitoring","graph"]

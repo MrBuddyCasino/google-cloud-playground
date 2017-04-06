@@ -1,0 +1,22 @@
+---
+elasticdata_disk: /dev/sdb
+es_instance_name: 'master'
+es_heap_size: '1g'
+es_config: {
+  cloud.gce.project_id: "{{ lookup('env', 'GCP_PROJECT_ID') }}",
+  cloud.gce.zone: "europe-west1-b",
+  discovery.zen.hosts_provider: "gce",
+  cluster.name: 'csit-conrad-elastic-cluster',
+  http.port: 9200,
+  network.bind_host: 0.0.0.0,
+  transport.tcp.port: 9300,
+  node.data: false,
+  node.master: true,
+  bootstrap.memory_lock: true,
+  network.host: _gce_
+}
+es_plugins_reinstall: true
+es_plugins:
+  - plugin: discovery-gce
+#es_enable_xpack: true
+#es_xpack_features: ["alerting","monitoring","graph"]

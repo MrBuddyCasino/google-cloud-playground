@@ -1,0 +1,11 @@
+---
+- name: Install "common" packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - apt-show-versions
+    - htop
+    - jq
+
+

@@ -1,0 +1,31 @@
+---
+users:
+  - name: agnes.koehler
+  - name: alexander.hirsch
+  - name: alexander.potukar
+  - name: benjamin.bauer
+  - name: bernd.zuther
+  - name: christian.uhl
+  - name: daniel.arndt
+  - name: dimitar.dimitrov
+  - name: georg.snatzke
+  - name: janos.szathmary
+  - name: jens.deters
+  - name: jochen.mader
+  - name: markus.lorenz
+  - name: josef.schicker
+
+###########################
+# Common properties
+###########################
+
+oracle_java_download_url:   http://download.oracle.com/otn-pub/java/jdk/8u112-b15/
+oracle_java_zip_file:       jdk-8u112-linux-x64.tar.gz
+oracle_java_folder:         jdk1.8.0_112
+
+os_max_map_count: 262144
+
+ansible_os_family: 'Debian'
+ansible_distribution: 'Debian'
+ansible_distribution_version: '16.04'
+ansible_user: "{{ lookup('env', 'USER') }}"

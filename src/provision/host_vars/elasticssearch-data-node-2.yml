@@ -1,0 +1,17 @@
+---
+elasticdata_disk: /dev/sdc
+es_instance_name: 'data02'
+es_heap_size: '1g'
+es_config: {
+  cluster.name: 'csit-conrad-elastic-cluster',
+  discovery.zen.ping.unicast.hosts: ['192.168.1.11:9300','192.168.1.10:9300'],
+  discovery.zen.ping.unicast.hosts.resolve_timeout: 60s,
+  discovery.zen.fd.ping_timeout: 60s,
+  network.bind_host: 0.0.0.0,
+  network.publish_host: 192.168.1.12,
+  http.port: 9200,
+  transport.tcp.port: 9300,
+  node.data: true,
+  node.master: false,
+  bootstrap.memory_lock: true
+}

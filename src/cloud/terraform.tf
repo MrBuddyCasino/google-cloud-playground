@@ -1,9 +1,11 @@
 
+/*
 provider "google" {
   credentials = "${file("~/.gcloud/account.json")}"
   project     = "turnkey-wording-163610"
-  region      = "europe-west1-b"
+  region      = "europe-west1"
 }
+
 
 // Create a new instance
 resource "google_compute_instance" "default" {
@@ -33,3 +35,4 @@ resource "google_compute_instance" "default" {
     }
 
 }
+*/

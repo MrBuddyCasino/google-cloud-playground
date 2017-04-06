@@ -1,0 +1,20 @@
+---
+- hosts: all, localhost
+  become: yes
+  become_method: sudo
+  gather_facts: False
+  roles:
+    - python
+    - locale
+    - jenkins-disk-setup
+    - common
+    - java
+    - nodejs
+    - bower
+    - yarn
+    - sbt
+    - uuid
+    - git
+    - docker
+    - gcloud
+    - jenkins

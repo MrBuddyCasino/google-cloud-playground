@@ -1,0 +1,4 @@
+# default is the when vagrant provisions a virtual machine with ansible
+---
+jenkins_disk: /dev/sdc
+docker_disk: /dev/sdd

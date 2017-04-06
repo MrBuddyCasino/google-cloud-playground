@@ -1,0 +1,18 @@
+---
+
+- name: java_state="present"
+  set_fact: java_state="present"
+
+- name: java_state="latest" when update_java == true
+  set_fact: java_state="latest"
+  when: update_java == true
+
+- name: Ensure Java is installed
+  apt: name={{ java }} state={{java_state}} update_cache=yes force=yes
+
+- command: java -version 2>&1 | grep OpenJDK
+  register: open_jdk
+
+- name: refresh the java ca-certificates
+  command: /var/lib/dpkg/info/ca-certificates-java.postinst configure
+  when: open_jdk.rc == 0

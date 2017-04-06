@@ -1,0 +1,45 @@
+---
+###TODO uses stat task here
+- command: test -e /usr/local/{{oracle_java_folder}}/
+  become: yes
+  become_method: sudo
+  register: java_exist
+  ignore_errors: true
+
+- name: Download Java
+  raw: 'wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "{{oracle_java_download_url}}/{{oracle_java_zip_file}}" -O /tmp/{{oracle_java_zip_file}}'
+  become: yes
+  become_method: sudo
+  when: java_exist.rc != 0
+
+- name: Unpack Java
+  raw: 'sudo tar xzf /tmp/{{oracle_java_zip_file}} --directory=/usr/local/'
+  become: yes
+  become_method: sudo
+  when: java_exist.rc != 0
+
+- name: Update-alternatives install java
+  raw: 'update-alternatives --install "/usr/bin/java" "java" "/usr/local/{{oracle_java_folder}}/bin/java" 1'
+  become: yes
+  become_method: sudo
+- name: Update-alternatives install javac
+  raw: 'sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/{{oracle_java_folder}}/bin/javac" 1'
+  become: yes
+  become_method: sudo
+- name: Update-alternatives install javaws
+  raw: 'update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/local/{{oracle_java_folder}}/bin/javaws" 1'
+  become: yes
+  become_method: sudo
+- name: Update-alternatives set java
+  raw: 'update-alternatives --set "java" "/usr/local/{{oracle_java_folder}}/bin/java"'
+  become: yes
+  become_method: sudo
+- name: Update-alternatives set javac
+  raw: 'update-alternatives --set "javac" "/usr/local/{{oracle_java_folder}}/bin/javac"'
+  become: yes
+  become_method: sudo
+- name: Update-alternatives set javaws
+  raw: 'update-alternatives --set "javaws" "/usr/local/{{oracle_java_folder}}/bin/javaws"'
+  become: yes
+  become_method: sudo
+

@@ -1,0 +1,5 @@
+# localhost is the when an instance is created and is automatically provisioned with ansible
+---
+jenkins_disk: /dev/sdb
+docker_disk: /dev/sdc
+

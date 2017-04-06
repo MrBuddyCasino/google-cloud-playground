@@ -1,0 +1,26 @@
+---
+### SBT Build tool to build scala projects
+
+
+
+- name: Add SBT key
+  apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=2EE0EA64E40A89B84B2DF73499E82A75642AC823
+  become: yes
+  become_method: sudo
+
+- name: Add SBT repository
+  apt_repository: repo='deb https://dl.bintray.com/sbt/debian /' state=present
+  become: yes
+  become_method: sudo
+
+- name: Update Apt and Install sbt
+  apt: update_cache=yes name=sbt state=latest
+  become: yes
+  become_method: sudo
+
+#- name: Install SBT
+#  apt:
+#    name: sbt
+#    update_cache: yes
+#    bevcome: yes
+#    become_method: sudo

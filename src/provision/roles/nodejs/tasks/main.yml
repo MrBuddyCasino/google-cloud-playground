@@ -1,0 +1,9 @@
+---
+- name: Add Node.js v7 repo
+  shell:
+     curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+
+- name: Install Node.js v7.x (latest)
+  apt: update_cache=yes name=nodejs state=latest
+  become: yes
+  become_method: sudo

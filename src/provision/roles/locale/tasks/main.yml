@@ -1,0 +1,4 @@
+---
+- locale_gen:
+    name: "{{ default_locale }}"
+    state: present

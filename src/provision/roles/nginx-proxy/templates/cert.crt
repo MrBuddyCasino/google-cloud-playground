@@ -1,0 +1,1 @@
+{{ proxy_cert | b64decode }}

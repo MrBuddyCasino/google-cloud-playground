@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<org.jvnet.hudson.plugins.SbtPluginBuilder_-DescriptorImpl plugin="sbt@1.5">
+    <installations>
+        <org.jvnet.hudson.plugins.SbtPluginBuilder_-SbtInstallation>
+            <name>SBT_13_13</name>
+            <home>/usr/share/sbt-launcher-packaging/bin/sbt-launch.jar</home>
+            <properties/>
+            <sbtArguments></sbtArguments>
+        </org.jvnet.hudson.plugins.SbtPluginBuilder_-SbtInstallation>
+    </installations>
+</org.jvnet.hudson.plugins.SbtPluginBuilder_-DescriptorImpl>

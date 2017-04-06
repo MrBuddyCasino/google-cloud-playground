@@ -1,0 +1,6 @@
+---
+- name: Install "bower" node.js package on version {{ bower_version }}
+  shell:
+      npm install bower@{{ bower_version }} -g
+  become: yes
+  become_method: sudo

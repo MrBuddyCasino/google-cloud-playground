@@ -1,0 +1,7 @@
+---
+- name: Install "uuid" package
+  apt:
+    name: uuid
+    update_cache: yes
+
+

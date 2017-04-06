@@ -1,0 +1,181 @@
+---
+- name: Add Jenkins key
+  apt_key: url=https://pkg.jenkins.io/debian/jenkins-ci.org.key state=present
+
+- name: Add Jenkins repository
+  apt_repository: repo='deb http://pkg.jenkins.io/debian-stable binary/' state=present
+
+- name: Update repositories cache and install "Jenkins" package
+  apt:
+    name: jenkins
+    update_cache: yes
+
+
+- name: Install latest libfontconfig" for PhantomJS"
+  apt:
+    name: libfontconfig
+    state: latest
+
+- name: Disable setup wizard
+  lineinfile:
+    dest: /etc/default/jenkins
+    regexp: '^JAVA_ARGS='
+    line: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"'
+
+- name: create secrets folder
+  file:
+    path: /var/lib/jenkins/secrets
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: create init.groovy.d folder
+  file:
+    path: /var/lib/jenkins/init.groovy.d
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Copy Credentials init.groovy
+  template:
+    src: 00_create-credentials.groovy
+    dest: /var/lib/jenkins/init.groovy.d/00_create-credentials.groovy
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy JDK init.groovy
+  copy:
+    src: 01_set-jdk.groovy
+    dest: /var/lib/jenkins/init.groovy.d/01_set-jdk.groovy
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy JDK init.groovy
+  template:
+    src: 02_set-env-vars.groovy
+    dest: /var/lib/jenkins/init.groovy.d/02_set-env-vars.groovy
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy Plugins init.groovy
+  copy:
+    src: 03_install-plugins.groovy
+    dest: /var/lib/jenkins/init.groovy.d/03_install-plugins.groovy
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy Jobseed init.groovy
+  copy:
+    src: 04_create-seed-job.groovy
+    dest: /var/lib/jenkins/init.groovy.d/04_create-seed-job.groovy
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Add user init.groovy
+  template:
+    src: 05_add-users.groovy
+    dest: /var/lib/jenkins/init.groovy.d/05_add-users.groovy
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy sbt tool config
+  copy:
+    src: org.jvnet.hudson.plugins.SbtPluginBuilder.xml
+    dest: /var/lib/jenkins/org.jvnet.hudson.plugins.SbtPluginBuilder.xml
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- stat: path=/var/lib/jenkins/secrets/initialAdminPassword
+  register: adminPasswordFile
+
+- name: Generate initial admin password
+  raw: "bash -c \"uuid | tr -d '-' &> /var/lib/jenkins/secrets/initialAdminPassword\""
+  when: adminPasswordFile.stat.exists == False
+
+- name: Change permission of initial password file
+  file:
+    path: /var/lib/jenkins/secrets/initialAdminPassword
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Register initial admin password
+  raw: "cat /var/lib/jenkins/secrets/initialAdminPassword | tr -d '\r\n'"
+  register: admin_password
+
+- name: Show debug output for password
+  debug:
+    var: admin_password
+
+- name: Restart Jenkins must be performed before download can start
+  service:
+    name: jenkins
+    state: restarted
+
+- name: Wait for Jenkins to restart
+  wait_for:
+    host=localhost
+    port=8080
+    delay=20
+    timeout=300
+
+- name: Create SSH folder for jenkins user
+  file:
+    path: /var/lib/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+  become: true
+  become_user: jenkins
+
+- stat: path=/var/lib/jenkins/.ssh/id_rsa
+  register: private_key
+
+- name: Create SSH key for jenkins user
+  raw: "ssh-keygen -b 2048 -t rsa -f /var/lib/jenkins/.ssh/id_rsa -q -N \"\""
+  become: true
+  become_user: jenkins
+  when: private_key.stat.exists == False
+
+- name: Change permissions of key file
+  file:
+    path: /var/lib/jenkins/.ssh/id_rsa
+    owner: jenkins
+    group: jenkins
+    mode: 0400
+
+- name: Show public key
+  raw: "cat /var/lib/jenkins/.ssh/id_rsa.pub"
+  register: jenkins_pubkey
+
+- debug:
+    var: jenkins_pubkey
+
+- name: Add Jenkins to Docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes
+  notify:
+    - Restart Docker
+    - Restart Jenkins
+
+- name: Add links to google tools
+  file:
+    src: /opt/gcloud/google-cloud-sdk/bin/{{ item }}
+    dest: /usr/bin/{{ item }}
+    state: link
+  with_items:
+    - gcloud
+    - cbt
+    - kubectl
