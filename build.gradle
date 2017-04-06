@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://repo.jenkins-ci.org/releases/"
+    }
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['provision/roles/jenkins/templates', 'provision/roles/jenkins/files']
+        }
+    }
+}
+
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'org.jenkins-ci.main:jenkins-core:2.41'
+    compile 'org.eclipse.hudson:hudson-core:3.3.3'
+    compile 'org.jenkins-ci.plugins:credentials:2.1.10'
+    compile 'com.cloudbees.jenkins.plugins:cloudbees-credentials:3.3'
+    compile 'org.jenkins-ci.plugins:ssh-credentials:1.12'
+    compile 'org.jenkins-ci.plugins:plain-credentials:1.3'
+    compile 'org.eclipse.hudson.plugins:ssh-slaves:3.0.1'
+}
