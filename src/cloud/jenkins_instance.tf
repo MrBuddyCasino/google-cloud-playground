@@ -17,7 +17,7 @@ resource "google_compute_instance" "jenkins" {
   }
 
   network_interface {
-    subnetwork = "${google_compute_subnetwork.dmz.name}"
+    subnetwork = "${google_compute_subnetwork.europe-west1-dmz.name}"
     access_config {
       // Ephemeral IP
     }
@@ -31,7 +31,7 @@ data "template_file" "jenkins_metadata_startup_script" {
   template = "${file("${path.module}/metadata_startup_script.sh")}"
 
   vars {
-    git_private_key             = "${file("~/.ssh/id_dsa")}"
+    git_private_key             = "${file("~/.ssh/github_rsa")}"
     vault_pass                  = "12345678"
     playbook                    = "buildserver.yml"
     additional_parameters       = "--extra-vars \"@/var/conrad/provision/extra_vars/jenkins.yml\""
