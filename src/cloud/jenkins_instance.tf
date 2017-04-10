@@ -34,7 +34,7 @@ data "template_file" "jenkins_metadata_startup_script" {
     git_private_key             = "${file("~/.ssh/github_rsa")}"
     vault_pass                  = "12345678"
     playbook                    = "buildserver.yml"
-    additional_parameters       = "--extra-vars \"@/var/conrad/provision/extra_vars/jenkins.yml\""
+    additional_parameters       = "--extra-vars \"@/var/conrad/src/provision/extra_vars/jenkins.yml\""
   }
 }
 
